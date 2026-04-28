@@ -114,37 +114,77 @@ async function enrichStopsWithPlaces(stops, userLocation) {
 }
 
 /**
- * Reverse geocode coordinates to get city and country name
+ * Reverse geocode coordinates to get a precise location name
  */
 async function reverseGeocode(lat, lng) {
-  const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${GOOGLE_MAPS_API_KEY}&result_type=locality|administrative_area_level_1`;
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${GOOGLE_MAPS_API_KEY}`;
 
   try {
     const response = await fetch(url);
     const data = await response.json();
 
-    if (data.status === "OK" && data.results.length > 0) {
-      const components = data.results[0].address_components;
+    if (data.status === "OK" && data.results && data.results.length > 0) {
+      // Get the most specific address available (usually the first result)
+      const bestResult = data.results[0];
+      
       let city = "";
       let country = "";
+      let neighborhood = "";
 
-      for (const comp of components) {
-        if (comp.types.includes("locality")) {
+      for (const comp of bestResult.address_components) {
+        if (comp.types.includes("sublocality") || comp.types.includes("neighborhood")) {
+          neighborhood = comp.long_name;
+        }
+        if (!city && (comp.types.includes("locality") || comp.types.includes("administrative_area_level_2") || comp.types.includes("administrative_area_level_1"))) {
           city = comp.long_name;
         }
-        if (comp.types.includes("country")) {
+        if (!country && comp.types.includes("country")) {
           country = comp.long_name;
         }
       }
 
-      return { city: city || "Unknown City", country: country || "Unknown Country" };
+      // If we have a neighborhood and a city, combine them for a precise location
+      if (neighborhood && city && neighborhood !== city) {
+        city = `${neighborhood}, ${city}`;
+      }
+
+      return { 
+        city: city || "Unknown Location", 
+        country: country || "Unknown Country",
+        formattedAddress: bestResult.formatted_address
+      };
     }
 
-    return { city: "Unknown City", country: "Unknown Country" };
+    return { city: "Unknown Location", country: "Unknown Country", formattedAddress: null };
   } catch (error) {
     console.error("Geocoding error:", error.message);
-    return { city: "Unknown City", country: "Unknown Country" };
+    return { city: "Unknown Location", country: "Unknown Country", formattedAddress: null };
   }
 }
 
-module.exports = { searchPlace, enrichStopsWithPlaces, reverseGeocode };
+/**
+ * Forward geocode an address string to get coordinates
+ */
+async function forwardGeocode(address) {
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${GOOGLE_MAPS_API_KEY}`;
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data.status === "OK" && data.results && data.results.length > 0) {
+      const location = data.results[0].geometry.location;
+      return {
+        lat: location.lat,
+        lng: location.lng,
+        formattedAddress: data.results[0].formatted_address
+      };
+    }
+    return null;
+  } catch (error) {
+    console.error("Forward geocoding error:", error.message);
+    return null;
+  }
+}
+
+module.exports = { searchPlace, enrichStopsWithPlaces, reverseGeocode, forwardGeocode };

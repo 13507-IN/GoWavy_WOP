@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { generateItinerary } = require("../services/gemini");
-const { enrichStopsWithPlaces, reverseGeocode } = require("../services/places");
+const { enrichStopsWithPlaces, reverseGeocode, forwardGeocode } = require("../services/places");
 const { getRoute } = require("../services/routes");
 
 /**
@@ -102,6 +102,28 @@ router.post("/geocode", async (req, res) => {
       return res.status(400).json({ error: "lat and lng are required" });
     }
     const location = await reverseGeocode(lat, lng);
+    res.json(location);
+  } catch (error) {
+    res.status(500).json({ error: "Geocoding failed", message: error.message });
+  }
+});
+
+/**
+ * POST /api/trip/forward-geocode
+ * Forward geocode a city/location string to lat, lng
+ *
+ * Body: { address }
+ */
+router.post("/forward-geocode", async (req, res) => {
+  try {
+    const { address } = req.body;
+    if (!address) {
+      return res.status(400).json({ error: "address is required" });
+    }
+    const location = await forwardGeocode(address);
+    if (!location) {
+      return res.status(404).json({ error: "Location not found" });
+    }
     res.json(location);
   } catch (error) {
     res.status(500).json({ error: "Geocoding failed", message: error.message });

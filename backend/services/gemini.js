@@ -6,7 +6,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
  * Generate a personalized trip itinerary using Gemini AI
  */
 async function generateItinerary({ lat, lng, city, country, friends, budget, mood, duration, currency }) {
-  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
   const groupSize = (friends || 0) + 1;
   const durationType = duration === "short" ? "2-3 hours (quick hangout/quality time)" : "8-10 hours (full day trip)";
