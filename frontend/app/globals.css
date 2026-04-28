@@ -1,0 +1,142 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --wave-cream: #f7f9fc;
+  --wave-red: #ff5d73;
+  --wave-coral: #ff5d73;
+  --wave-teal: #23b5d3;
+  --wave-mint: #23b5d3;
+  --wave-blue: #23b5d3;
+  --wave-navy: #0b132b;
+  --wave-ink: #0b132b;
+  --surface-1: rgba(247, 249, 252, 0.9);
+  --surface-2: rgba(247, 249, 252, 0.78);
+  --surface-3: rgba(247, 249, 252, 0.95);
+  --surface-4: rgba(247, 249, 252, 0.7);
+  --border-soft: rgba(35, 181, 211, 0.25);
+  --border-strong: rgba(35, 181, 211, 0.35);
+  --border-bright: rgba(247, 249, 252, 0.6);
+  --text-muted: rgba(35, 181, 211, 0.75);
+  --text-subtle: rgba(35, 181, 211, 0.6);
+  --shadow-soft: rgba(11, 19, 43, 0.35);
+  --shadow-strong: rgba(11, 19, 43, 0.6);
+  --shadow-card: rgba(11, 19, 43, 0.45);
+  --shadow-chip: rgba(11, 19, 43, 0.25);
+  --glow: rgba(35, 181, 211, 0.55);
+  --grid: rgba(35, 181, 211, 0.12);
+  --radius: 0.625rem;
+  --background: #f7f9fc;
+  --foreground: #0b132b;
+  --card: #f7f9fc;
+  --card-foreground: #0b132b;
+  --popover: #f7f9fc;
+  --popover-foreground: #0b132b;
+  --primary: #23b5d3;
+  --primary-foreground: #f7f9fc;
+  --secondary: #f7f9fc;
+  --secondary-foreground: #23b5d3;
+  --muted: #f7f9fc;
+  --muted-foreground: #64748b;
+  --accent: #ff5d73;
+  --accent-foreground: #f7f9fc;
+  --destructive: #ef4444;
+  --border: rgba(35, 181, 211, 0.28);
+  --input: rgba(35, 181, 211, 0.28);
+  --ring: rgba(35, 181, 211, 0.55);
+}
+
+.dark {
+  --wave-cream: #0b132b;
+  --wave-red: #ff6b84;
+  --wave-coral: #ff6b84;
+  --wave-teal: #2fe7e7;
+  --wave-mint: #2fe7e7;
+  --wave-blue: #2fe7e7;
+  --wave-navy: #0b132b;
+  --wave-ink: #f7f9fc;
+  --surface-1: rgba(11, 19, 43, 0.9);
+  --surface-2: rgba(11, 19, 43, 0.75);
+  --surface-3: rgba(11, 19, 43, 0.95);
+  --surface-4: rgba(11, 19, 43, 0.7);
+  --border-soft: rgba(47, 231, 231, 0.2);
+  --border-strong: rgba(47, 231, 231, 0.35);
+  --border-bright: rgba(11, 19, 43, 0.8);
+  --text-muted: rgba(47, 231, 231, 0.8);
+  --text-subtle: rgba(47, 231, 231, 0.6);
+  --shadow-soft: rgba(0, 0, 0, 0.45);
+  --shadow-strong: rgba(0, 0, 0, 0.7);
+  --shadow-card: rgba(0, 0, 0, 0.55);
+  --shadow-chip: rgba(0, 0, 0, 0.4);
+  --glow: rgba(47, 231, 231, 0.55);
+  --grid: rgba(47, 231, 231, 0.12);
+  --background: #0b132b;
+  --foreground: #f7f9fc;
+  --card: #0b132b;
+  --card-foreground: #f7f9fc;
+  --popover: #0b132b;
+  --popover-foreground: #f7f9fc;
+  --primary: #2fe7e7;
+  --primary-foreground: #0b132b;
+  --secondary: #0b132b;
+  --secondary-foreground: #2fe7e7;
+  --muted: #0b132b;
+  --muted-foreground: rgba(247, 249, 252, 0.7);
+  --accent: #ff6b84;
+  --accent-foreground: #0b132b;
+  --destructive: #ff6b84;
+  --border: rgba(47, 231, 231, 0.2);
+  --input: rgba(47, 231, 231, 0.2);
+  --ring: rgba(47, 231, 231, 0.5);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-space);
+  --font-display: var(--font-syne);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --radius-lg: var(--radius);
+}
+
+body {
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.01em;
+  text-rendering: optimizeLegibility;
+}
+
+.mesh-gradient {
+  background-color: var(--wave-cream);
+  background-image:
+    radial-gradient(at 0% 0%, rgba(35, 181, 211, 0.22) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(255, 93, 115, 0.18) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(35, 181, 211, 0.2) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(11, 19, 43, 0.12) 0px, transparent 50%);
+}
+
+.glass-panel {
+  background: var(--surface-1);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 40px 120px -80px var(--shadow-soft);
+}
+
+.glass-card {
+  background: linear-gradient(135deg, rgba(35, 181, 211, 0.12) 0%, rgba(255, 93, 115, 0.06) 100%);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(35, 181, 211, 0.25);
+}
+
+.hover-pop {
+  transition: transform 0.45s ease, box-shadow 0.45s ease;
+}
+
+.hover-pop:hover {
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 0 20px 50px -40px rgba(255, 93, 115, 0.4);
+}
