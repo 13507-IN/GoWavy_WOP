@@ -12,7 +12,7 @@ interface Stop {
     lng: number | null;
     name?: string;
     address?: string;
-    photoUrl?: string;
+    photoUrl?: string | null;
     rating?: number | null;
     googleMapsUrl?: string | null;
   };
