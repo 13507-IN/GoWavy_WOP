@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
@@ -47,7 +47,18 @@ const dateOptions = [
 const budgetMarks = ["$", "$$", "$$$", "$$$$"];
 const budgetTones = ["Economy", "Comfort", "Premium", "Elite"];
 
-export default function Planner() {
+function PlannerFallback() {
+  return (
+    <div className="flex min-h-screen items-center justify-center mesh-gradient">
+      <div className="flex items-center gap-3 rounded-2xl border border-[color:var(--border-soft)] bg-[color:var(--surface-1)] px-5 py-4">
+        <Loader2 className="h-5 w-5 animate-spin text-[color:var(--wave-teal)]" />
+        <span className="text-sm font-semibold">Loading planner...</span>
+      </div>
+    </div>
+  );
+}
+
+function PlannerContent() {
   const searchParams = useSearchParams();
   const { user, loading: authLoading, refreshUser } = useAuth();
   const initialVibe = searchParams.get("vibe") || "energy";
@@ -617,5 +628,13 @@ export default function Planner() {
         </main>
       </div>
     </div>
+  );
+}
+
+export default function PlannerPage() {
+  return (
+    <Suspense fallback={<PlannerFallback />}>
+      <PlannerContent />
+    </Suspense>
   );
 }

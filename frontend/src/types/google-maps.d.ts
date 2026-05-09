@@ -11,11 +11,18 @@ declare namespace google.maps {
   class LatLngBounds {
     constructor(sw?: LatLngLiteral, ne?: LatLngLiteral);
     extend(point: LatLngLiteral): LatLngBounds;
+    getCenter(): LatLngLiteral;
   }
 
   class Polyline {
     constructor(options: PolylineOptions);
     setMap(map: Map | null): void;
+  }
+
+  class InfoWindow {
+    constructor(options?: InfoWindowOptions);
+    setContent(content: string | Element): void;
+    open(map: Map, anchor?: marker.AdvancedMarkerElement): void;
   }
 
   interface MapOptions {
@@ -24,6 +31,9 @@ declare namespace google.maps {
     mapId?: string;
     disableDefaultUI?: boolean;
     zoomControl?: boolean;
+    mapTypeControl?: boolean;
+    streetViewControl?: boolean;
+    fullscreenControl?: boolean;
     gestureHandling?: string;
     styles?: MapTypeStyle[];
   }
@@ -46,7 +56,31 @@ declare namespace google.maps {
     strokeColor?: string;
     strokeOpacity?: number;
     strokeWeight?: number;
+    icons?: IconSequence[];
     map?: Map;
+  }
+
+  interface InfoWindowOptions {
+    content?: string | Element;
+    position?: LatLngLiteral;
+  }
+
+  interface IconSequence {
+    icon: Symbol;
+    offset?: string;
+  }
+
+  interface Symbol {
+    path: SymbolPath;
+    scale?: number;
+  }
+
+  enum SymbolPath {
+    BACKWARD_CLOSED_ARROW,
+    BACKWARD_OPEN_ARROW,
+    CIRCLE,
+    FORWARD_CLOSED_ARROW,
+    FORWARD_OPEN_ARROW,
   }
 
   interface MapTypeStyle {
